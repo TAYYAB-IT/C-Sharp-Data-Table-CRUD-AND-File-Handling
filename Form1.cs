@@ -51,7 +51,15 @@ namespace App9
                     record["Name"] = Name.Text;
                     record["Age"] = Age.Text;
                     this.table.Rows.Add(record);
-                    this.writefile();
+                    string path = Directory.GetCurrentDirectory() + @"\DataFile.txt";
+                    if (File.Exists(path))
+                    {
+                        this.append_record(record, path);
+                    }
+                    else
+                    {
+                        this.writefile();
+                    }
                     Roll_No.Text = Name.Text = Age.Text = "";
                     records_view.Refresh();
                 }
@@ -143,6 +151,20 @@ namespace App9
             else
             {
                 MessageBox.Show("Kindly, Enter Roll# To Delete Record!");
+            }
+        }
+        //Append Record
+        public void append_record(DataRow record,String path)
+        {
+            Stream stream = File.Open(path, FileMode.Append);
+            using (StreamWriter sw = new StreamWriter(stream))
+            {
+                
+                    sw.WriteLine(record["Sr#"].ToString());
+                    sw.WriteLine(record["Roll#"].ToString());
+                    sw.WriteLine(record["Name"].ToString());
+                    sw.WriteLine(record["Age"].ToString());
+                
             }
         }
         //Write Data in file
